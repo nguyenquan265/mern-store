@@ -16,7 +16,22 @@
     "dev": "cross-env BUILD_MODE=dev nodemon --exec babel-node ./src/server.js"
   },
   "dependencies": {
+    "@babel/runtime": "^7.24.6",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {
+    "@babel/cli": "^7.24.6",
+    "@babel/core": "^7.24.6",
+    "@babel/eslint-parser": "^7.24.6",
+    "@babel/node": "^7.24.6",
+    "@babel/plugin-transform-runtime": "^7.24.6",
+    "@babel/preset-env": "^7.24.6",
+    "babel-plugin-module-resolver": "^5.0.2",
+    "eslint": "^9.4.0",
+    "nodemon": "^3.1.2"
   }
 }
