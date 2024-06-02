@@ -27,7 +27,7 @@ const router = createBrowserRouter([
         index: true,
         element: <Landing />,
         loader: landingLoader,
-        errorElement: ErrorElement
+        errorElement: <ErrorElement />
       },
       {
         path: 'products',

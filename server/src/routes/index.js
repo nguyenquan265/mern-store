@@ -1,10 +1,10 @@
 import { Router } from 'express'
 const router = Router()
 
-// import userRouter from './user.routes'
+import productRouter from './product.routes'
 import { ApiError } from '~/utils/ApiError'
 
-// router.use('/users', userRouter)
+router.use('/products', productRouter)
 router.all('*', (req, res, next) =>
   next(new ApiError(404, `Can't find ${req.originalUrl} on this server!`))
 )
