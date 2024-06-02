@@ -57,10 +57,19 @@ const Navbar = () => {
           </ul>
         </div>
         <div className='navbar-end'>
-          <label className='swap swap-rotate'>
-            <input type='checkbox' onClick={handleTheme} />
-            <BsSunFill className={`swap-${theme === 'winter' ? 'on' : 'off'} fill-current w-6 h-6`} />
-            <BsMoonFill className={`swap-${theme === 'winter' ? 'off' : 'on'} fill-current w-6 h-6`} />
+          <label className='swap swap-rotate' onClick={handleTheme}>
+            {/* <input type='checkbox' onClick={handleTheme} /> */}
+
+            {
+              theme === 'winter' ? (
+                <BsMoonFill className='fill-current w-6 h-6' />
+              ) : (
+                <BsSunFill className='fill-current w-6 h-6' />
+              )
+            }
+
+            {/* <BsSunFill className={`swap-${theme === 'winter' ? 'on' : 'off'} fill-current w-6 h-6`} />
+            <BsMoonFill className={`swap-${theme === 'winter' ? 'off' : 'on'} fill-current w-6 h-6`} /> */}
           </label>
           <NavLink className='btn btn-ghost btn-circle btn-md ml-4'>
             <div className='indicator'>
