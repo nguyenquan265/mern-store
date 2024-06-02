@@ -1,5 +1,6 @@
 import { Op } from 'sequelize'
 import Product from '~/models/product'
+import { ApiError } from '~/utils/ApiError'
 import { catchAsync } from '~/utils/catchAsync'
 
 export const getAllProducts = catchAsync(async (req, res, next) => {
@@ -66,5 +67,18 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
       categories: ['all', 'Tables', 'Chairs', 'Kids', 'Sofas', 'Beds'],
       companies: ['all', 'Modenza', 'Luxora', 'Artifex', 'Comfora', 'Homestead']
     }
+  })
+})
+
+export const getProductByID = catchAsync(async (req, res, next) => {
+  const product = await Product.findByPk(req.params.id)
+
+  if (!product) {
+    throw new ApiError(404, 'Product not found')
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: product
   })
 })

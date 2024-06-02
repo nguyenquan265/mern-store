@@ -12,7 +12,6 @@ import { corsOptions } from './config/cors'
 app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.use(express.static(`${__dirname}/public`))
 
 app.use('/api/v1', router)
 app.use(errorMiddleware)
