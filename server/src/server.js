@@ -5,7 +5,7 @@ import cors from 'cors'
 
 import { env } from './config/env'
 import router from './routes'
-import { connectDB } from './config/mongodb'
+import { connectDB } from './config/sql'
 import { errorMiddleware } from './middlewares/error.middleware'
 import { corsOptions } from './config/cors'
 

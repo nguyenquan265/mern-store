@@ -150,5 +150,15 @@
       "shipping": false,
       "colors": ["#FF5733", "#33FF57", "#3366FF"]
     }
-  ]
+  ],
+  "meta": {
+    "pagination": {
+      "page": 1,
+      "pageSize": 10,
+      "pageCount": 3,
+      "total": 22
+    },
+    "categories": ["all", "Tables", "Chairs", "Kids", "Sofas", "Beds"],
+    "companies": ["all", "Modenza", "Luxora", "Artifex", "Comfora", "Homestead"]
+  }
 }
