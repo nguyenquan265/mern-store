@@ -37,7 +37,7 @@ const Navbar = () => {
             className='hidden lg:flex btn btn-primary text-3xl items-center'
             to='/'
           >
-            Q
+            C
           </NavLink>
           <div className='dropdown'>
             <label className='btn btn-ghost lg:hidden' tabIndex={0}>
