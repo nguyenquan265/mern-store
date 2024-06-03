@@ -9,31 +9,31 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
   const excludedFields = ['page', 'order']
   excludedFields.forEach((el) => delete queryObj[el])
 
-  const conditions = {}
+  const whereConditions = {}
   const orderCondition = {}
 
   if (queryObj.search && queryObj.search !== 'all') {
-    conditions.title = { [Op.like]: `%${queryObj.search}%` }
+    whereConditions.title = { [Op.like]: `%${queryObj.search}%` }
   }
 
   if (queryObj.category && queryObj.category !== 'all') {
-    conditions.category = queryObj.category
+    whereConditions.category = queryObj.category
   }
 
   if (queryObj.company && queryObj.company !== 'all') {
-    conditions.company = queryObj.company
+    whereConditions.company = queryObj.company
   }
 
   if (queryObj.price) {
-    conditions.price = { [Op.lte]: queryObj.price }
+    whereConditions.price = { [Op.lte]: queryObj.price }
   }
 
   if (queryObj.shipping) {
-    conditions.shipping = queryObj.shipping === 'true'
+    whereConditions.shipping = queryObj.shipping === 'on'
   }
 
   if (queryObj.featured) {
-    conditions.featured = queryObj.featured === 'true'
+    whereConditions.featured = queryObj.featured === 'true'
   }
 
   // pagination
@@ -56,7 +56,7 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
   // query
   const products = await Product.findAndCountAll({
     order: orderCondition.order,
-    where: conditions,
+    where: whereConditions,
     offset: skip,
     limit
   })

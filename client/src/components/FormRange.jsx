@@ -2,10 +2,10 @@ import PropTypes from 'prop-types'
 import { formatPrice } from '../utils'
 import { useState } from 'react'
 
-const FormRange = ({ label, name, size }) => {
+const FormRange = ({ label, name, size, price }) => {
   const step = 1000
   const maxPrice = 100000
-  const [selectedPrice, setSelectedPrice] = useState(maxPrice)
+  const [selectedPrice, setSelectedPrice] = useState(price || maxPrice)
 
   return (
     <div className='form-control'>
@@ -34,7 +34,8 @@ const FormRange = ({ label, name, size }) => {
 FormRange.propTypes = {
   label: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
-  size: PropTypes.string
+  size: PropTypes.string,
+  price: PropTypes.number
 }
 
 export default FormRange
