@@ -10,6 +10,7 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
   excludedFields.forEach((el) => delete queryObj[el])
 
   const conditions = {}
+  const orderCondition = {}
 
   if (queryObj.search && queryObj.search !== 'all') {
     conditions.title = { [Op.like]: `%${queryObj.search}%` }
@@ -41,9 +42,20 @@ export const getAllProducts = catchAsync(async (req, res, next) => {
   const skip = (page - 1) * limit
 
   // order
+  const order = req.query.order || 'a-z'
+  if (order === 'a-z') {
+    orderCondition.order = [['title', 'ASC']]
+  } else if (order === 'z-a') {
+    orderCondition.order = [['title', 'DESC']]
+  } else if (order === 'high') {
+    orderCondition.order = [['price', 'ASC']]
+  } else if (order === 'low') {
+    orderCondition.order = [['price', 'DESC']]
+  }
 
   // query
   const products = await Product.findAndCountAll({
+    order: orderCondition.order,
     where: conditions,
     offset: skip,
     limit
