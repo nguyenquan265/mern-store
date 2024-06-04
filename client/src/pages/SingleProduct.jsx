@@ -1,6 +1,13 @@
 import { Link, useLoaderData } from 'react-router-dom'
-import { customAxios, formatColors, formatPrice, generateAmountOptions } from '../utils'
+import {
+  customAxios,
+  formatColors,
+  formatPrice,
+  generateAmountOptions
+} from '../utils'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { addItem } from '../features/cart/cartSlice'
 
 export const loader = async ({ params }) => {
   const res = await customAxios(`/products/${params.id}`)
@@ -17,9 +24,27 @@ const SingleProduct = () => {
   const colorArray = formatColors(colors)
   const [productColor, setProductColor] = useState(colorArray[0])
   const [amount, setAmount] = useState(1)
+  const dispatch = useDispatch()
 
   const handleAmount = (e) => {
     setAmount(parseInt(e.target.value))
+  }
+
+  const addtoCart = () => {
+    dispatch(
+      addItem({
+        cartProduct: {
+          cartID: product.id + productColor,
+          productID: id,
+          image,
+          title,
+          price,
+          amount,
+          company,
+          productColor
+        }
+      })
+    )
   }
 
   return (
@@ -61,8 +86,9 @@ const SingleProduct = () => {
                   <button
                     key={color}
                     type='button'
-                    className={`badge  w-6 h-6 mr-2  ${color === productColor && 'border-2 border-secondary'
-                      }`}
+                    className={`badge  w-6 h-6 mr-2  ${
+                      color === productColor && 'border-2 border-secondary'
+                    }`}
                     style={{ backgroundColor: color }}
                     onClick={() => setProductColor(color)}
                   ></button>
@@ -82,17 +108,12 @@ const SingleProduct = () => {
               value={amount}
               onChange={handleAmount}
             >
-              {
-                generateAmountOptions(id)
-              }
+              {generateAmountOptions(id)}
             </select>
           </div>
           {/* CART BUTTON */}
           <div className='mt-10 '>
-            <button
-              className='btn btn-secondary btn-md'
-              onClick={() => console.log('add to bag')}
-            >
+            <button className='btn btn-secondary btn-md' onClick={addtoCart}>
               Add to bag
             </button>
           </div>

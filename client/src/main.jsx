@@ -9,6 +9,6 @@ import { ToastContainer } from 'react-toastify'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <App />
-    <ToastContainer position='top-center' />
+    <ToastContainer position='top-center'  />
   </Provider>
 )
