@@ -1,6 +1,6 @@
 import { verify } from 'jsonwebtoken'
 import { env } from '~/config/env'
-import { User } from '~/models/user.model'
+// import { User } from '~/models/user.model'
 import { ApiError } from '~/utils/ApiError'
 import { catchAsync } from '~/utils/catchAsync'
 
@@ -22,23 +22,23 @@ export const protect = catchAsync(async (req, res, next) => {
 
   const decoded = verify(token, env.jwt.SECRET)
 
-  const user = await User.findById(decoded.id)
+  // const user = await User.findById(decoded.id)
 
-  if (!user) {
-    throw new ApiError(
-      401,
-      'The user belonging to this token does no longer exist'
-    )
-  }
+  // if (!user) {
+  //   throw new ApiError(
+  //     401,
+  //     'The user belonging to this token does no longer exist'
+  //   )
+  // }
 
-  if (user.changedPasswordAfter(decoded.iat)) {
-    throw new ApiError(
-      401,
-      'User recently changed password! Please log in again'
-    )
-  }
+  // if (user.changedPasswordAfter(decoded.iat)) {
+  //   throw new ApiError(
+  //     401,
+  //     'User recently changed password! Please log in again'
+  //   )
+  // }
 
-  req.user = user
+  // req.user = user
   next()
 })
 

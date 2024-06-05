@@ -12,7 +12,6 @@ export const env = {
   },
   jwt: {
     SECRET: process.env.JWT_SECRET,
-    EXPIRES_IN: process.env.JWT_EXPIRES_IN,
-    COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN
+    EXPIRES_IN: process.env.JWT_EXPIRES_IN
   }
 }
