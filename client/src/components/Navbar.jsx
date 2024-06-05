@@ -7,6 +7,7 @@ import { toggleTheme } from '../features/user/userSlice'
 
 const Navbar = () => {
   const { theme } = useSelector(state => state.user)
+  const { numItemsInCart } = useSelector(state => state.cart)
   const dispatch = useDispatch()
 
   const handleTheme = () => {
@@ -54,7 +55,7 @@ const Navbar = () => {
             <div className='indicator'>
               <BsCart3 className='h-6 w-6' />
               <span className='badge badge-sm badge-primary indicator-item'>
-                8
+                {numItemsInCart}
               </span>
             </div>
           </NavLink>

@@ -13,7 +13,7 @@ const getThemeFromLocalStorage = () => {
 }
 
 const defaultState = {
-  user: {},
+  user: null,
   theme: getThemeFromLocalStorage()
 }
 
@@ -22,7 +22,11 @@ const userSlice = createSlice({
   initialState: defaultState,
   reducers: {
     loginUser: (state, action) => {},
-    logoutUser: (state) => {},
+    logoutUser: (state) => {
+      state.user = null
+      localStorage.removeItem('user')
+      toast.success('Logged out successfully')
+    },
     toggleTheme: (state) => {
       const { winter, dracula } = themes
       state.theme = state.theme === dracula ? winter : dracula
