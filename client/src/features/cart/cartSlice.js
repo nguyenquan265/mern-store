@@ -37,11 +37,11 @@ const cartSlice = createSlice({
       toast.success('Item added to cart')
     },
     removeItem: (state, action) => {
-      const { cardID } = action.payload
+      const { cartID } = action.payload
       const alreadyInCart = state.cartItems.find(
-        (item) => item.cartID === cardID
+        (item) => item.cartID === cartID
       )
-      state.cartItems = state.cartItems.filter((item) => item.cartID !== cardID)
+      state.cartItems = state.cartItems.filter((item) => item.cartID !== cartID)
 
       state.numItemsInCart -= alreadyInCart.amount
       state.cartTotal -= alreadyInCart.amount * alreadyInCart.price
@@ -50,9 +50,9 @@ const cartSlice = createSlice({
       toast.error('Item removed from cart')
     },
     editItem: (state, action) => {
-      const { cardID, amount } = action.payload
+      const { cartID, amount } = action.payload
       const alreadyInCart = state.cartItems.find(
-        (item) => item.cartID === cardID
+        (item) => item.cartID === cartID
       )
 
       state.numItemsInCart += amount - alreadyInCart.amount
