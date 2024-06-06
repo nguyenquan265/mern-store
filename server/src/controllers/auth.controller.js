@@ -52,5 +52,5 @@ export const login = catchAsync(async (req, res, next) => {
 
   const token = signToken(user.id)
 
-  res.status(200).json({ status: 'success', jwt: token, user: rest })
+  res.status(200).json({ status: 'success', token, user: rest })
 })

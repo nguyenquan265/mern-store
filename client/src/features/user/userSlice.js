@@ -16,8 +16,13 @@ const getUserFromLocalStorage = () => {
   return JSON.parse(localStorage.getItem('user')) || null
 }
 
+const getTokenFromLocalStorage = () => {
+  return localStorage.getItem('token') || null
+}
+
 const defaultState = {
   user: getUserFromLocalStorage(),
+  token: getTokenFromLocalStorage(),
   theme: getThemeFromLocalStorage()
 }
 
@@ -26,13 +31,13 @@ const userSlice = createSlice({
   initialState: defaultState,
   reducers: {
     loginUser: (state, action) => {
-      console.log(action.payload)
-      const user = { ...action.payload.user, token: action.payload.jwt }
-      localStorage.setItem('user', JSON.stringify(user))
+      localStorage.setItem('user', JSON.stringify(action.payload.user))
+      localStorage.setItem('token', action.payload.token)
     },
     logoutUser: (state) => {
       state.user = null
       localStorage.removeItem('user')
+      localStorage.removeItem('token')
       toast.success('Logged out successfully')
     },
     toggleTheme: (state) => {
