@@ -18,8 +18,6 @@ export const register = catchAsync(async (req, res, next) => {
     throw new ApiError(400, 'All fields are required')
   }
 
-  const userData = { username, email, password }
-
   // Check if user already exists
   const user = await User.findOne({ where: { email } })
 
@@ -28,13 +26,11 @@ export const register = catchAsync(async (req, res, next) => {
   }
 
   // Create new user
-  const newUser = await User.create(userData)
+  const newUser = await User.create({ username, email, password })
 
   const { password: pass, ...rest } = newUser.toJSON()
 
-  const token = signToken(newUser.id)
-
-  res.status(200).json({ status: 'success', jwt: token, user: rest })
+  res.status(200).json({ status: 'success', user: rest })
 })
 
 export const login = catchAsync(async (req, res, next) => {})

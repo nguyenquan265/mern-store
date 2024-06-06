@@ -1,7 +1,22 @@
-import { Form, Link } from 'react-router-dom'
+import { Form, Link, redirect } from 'react-router-dom'
 import { FormInput, SubmitBtn } from '../components'
+import { customAxios } from '../utils'
+import { toast } from 'react-toastify'
 
-export const action = async () => { }
+export const action = async ({ request }) => {
+  const formData = await request.formData()
+  const data = Object.fromEntries(formData)
+
+  try {
+    await customAxios.post('/users/register', data)
+    toast.success('account created successfully')
+    return redirect('/login')
+  } catch (error) {
+    console.log(error)
+    toast.error(error?.response?.data?.message || 'please double check your credentials')
+    return null
+  }
+}
 
 const Register = () => {
   return (
@@ -12,7 +27,7 @@ const Register = () => {
       >
         <h4 className='text-center text-3xl font-bold'>Register</h4>
         <FormInput type='text' name='username' label='username' />
-        <FormInput type='email' name='identifier' label='email' />
+        <FormInput type='email' name='email' label='email' />
         <FormInput type='password' name='password' label='password' />
         <div className='mt-4'>
           <SubmitBtn text='Register' />
