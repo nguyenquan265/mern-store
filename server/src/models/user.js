@@ -51,9 +51,13 @@ const User = sequelize.define(
   }
 )
 
-User.beforeCreate(async (user, options) => {
+User.beforeCreate(async function (user, options) {
   const hashedPassword = await bcrypt.hash(user.password, 12)
   user.password = hashedPassword
 })
+
+User.prototype.isValidPassword = function (password) {
+  return bcrypt.compareSync(password, this.password)
+}
 
 export default User

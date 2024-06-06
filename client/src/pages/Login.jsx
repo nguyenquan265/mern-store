@@ -1,9 +1,34 @@
-import { Form, Link } from 'react-router-dom'
+import { Form, Link, redirect, Navigate } from 'react-router-dom'
 import { FormInput, SubmitBtn } from '../components'
+import { customAxios } from '../utils'
+import { toast } from 'react-toastify'
+import { loginUser } from '../features/user/userSlice'
+import { useSelector } from 'react-redux'
 
-export const action = async ({ request }) => { }
+export const action = (store) => async ({ request }) => {
+  const formData = await request.formData()
+  const data = Object.fromEntries(formData)
+
+  try {
+    const res = await customAxios.post('/users/login', data)
+    store.dispatch(loginUser(res.data))
+    toast.success('Login successfully')
+    return redirect('/')
+  } catch (error) {
+    toast.error(
+      error?.response?.data?.message || 'please double check your credentials'
+    )
+    return null
+  }
+}
 
 const Login = () => {
+  const { user } = useSelector((state) => state.user)
+
+  if (user) {
+    return <Navigate to='/' />
+  }
+
   return (
     <section className='h-screen grid place-items-center'>
       <Form
@@ -13,7 +38,7 @@ const Login = () => {
         <h4 className='text-center text-3xl font-bold'>Login</h4>
         <FormInput
           type='email'
-          name='identifier'
+          name='email'
           label='email'
           defaultValue='test@test.com'
         />

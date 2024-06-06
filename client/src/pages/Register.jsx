@@ -1,7 +1,8 @@
-import { Form, Link, redirect } from 'react-router-dom'
+import { Form, Link, Navigate, redirect } from 'react-router-dom'
 import { FormInput, SubmitBtn } from '../components'
 import { customAxios } from '../utils'
 import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
 
 export const action = async ({ request }) => {
   const formData = await request.formData()
@@ -12,13 +13,20 @@ export const action = async ({ request }) => {
     toast.success('account created successfully')
     return redirect('/login')
   } catch (error) {
-    console.log(error)
-    toast.error(error?.response?.data?.message || 'please double check your credentials')
+    toast.error(
+      error?.response?.data?.message || 'please double check your credentials'
+    )
     return null
   }
 }
 
 const Register = () => {
+  const { user } = useSelector((state) => state.user)
+
+  if (user) {
+    return <Navigate to='/' />
+  }
+
   return (
     <section className='h-screen grid place-items-center'>
       <Form

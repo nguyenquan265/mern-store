@@ -33,4 +33,24 @@ export const register = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', user: rest })
 })
 
-export const login = catchAsync(async (req, res, next) => {})
+export const login = catchAsync(async (req, res, next) => {
+  const { email, password } = req.body
+
+  // Check if all fields are provided
+  if (!email || !password) {
+    throw new ApiError(400, 'All fields are required')
+  }
+
+  // Check if user already exists or password is incorrect
+  const user = await User.scope('withPassword').findOne({ where: { email } })
+
+  if (!user || !user.isValidPassword(password)) {
+    throw new ApiError(400, 'Invalid email or password')
+  }
+
+  const { password: pass, ...rest } = user.toJSON()
+
+  const token = signToken(user.id)
+
+  res.status(200).json({ status: 'success', jwt: token, user: rest })
+})
