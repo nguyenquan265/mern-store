@@ -2,16 +2,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { logoutUser } from '../features/user/userSlice'
 import { clearCart } from '../features/cart/cartSlice'
+import { customAxios } from '../utils'
+import { toast } from 'react-toastify'
 
 const Header = () => {
   const { user } = useSelector(state => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await customAxios.post('/users/logout')
     navigate('/')
     dispatch(clearCart())
     dispatch(logoutUser())
+    toast.success('Logged out successfully')
     return
   }
 

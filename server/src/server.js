@@ -2,6 +2,7 @@ import express from 'express'
 const app = express()
 
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 
 import { env } from './config/env'
 import router from './routes'
@@ -10,6 +11,7 @@ import { errorMiddleware } from './middlewares/error.middleware'
 import { corsOptions } from './config/cors'
 
 app.use(cors(corsOptions))
+app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 

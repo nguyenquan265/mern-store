@@ -1,12 +1,58 @@
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import { store } from '../store'
+import { logoutUser } from '../features/user/userSlice'
 
 const localURL = 'http://localhost:8000/api/v1'
 // const prodURL = 'https://api.example.com/api/v1'
 
 // create custom axios instance
+axios.defaults.withCredentials = true
+
 export const customAxios = axios.create({
   baseURL: localURL
 })
+
+customAxios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+
+    return config
+  },
+  (error) => Promise.reject(error)
+)
+
+customAxios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config
+
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+
+      try {
+        const res = await axios.post('http://localhost:8000/api/v1/users/refresh-token')
+        const { token } = res.data
+
+        localStorage.setItem('token', token)
+
+        originalRequest.headers.Authorization = `Bearer ${token}`
+        return axios(originalRequest)
+      } catch (error) {
+        await axios.post('http://localhost:8000/api/v1/users/logout')
+        store.dispatch(logoutUser())
+        toast.error('Please log in to access this page.')
+        return
+      }
+    }
+
+    return Promise.reject(error)
+  }
+)
 
 // convert cents to dollars
 export const formatPrice = (price) => {

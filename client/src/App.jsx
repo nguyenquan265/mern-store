@@ -11,12 +11,14 @@ import {
   Login,
   Checkout,
   Orders,
+  Me,
 } from './pages'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 //loader
 import { loader as landingLoader } from './pages/Landing'
 import { loader as singleProductLoader } from './pages/SingleProduct'
 import { loader as productsLoader } from './pages/Products'
+import { loader as meLoader } from './pages/Me'
 //action
 import { action as registerAction } from './pages/Register'
 import { action as loginAction } from './pages/Login'
@@ -51,7 +53,10 @@ const router = createBrowserRouter([
         path: 'cart',
         element: <Cart />,
       },
-      { path: 'about', element: <About /> },
+      {
+        path: 'about',
+        element: <About />
+      },
       {
         path: 'checkout',
         element: <Checkout />,
@@ -60,6 +65,12 @@ const router = createBrowserRouter([
         path: 'orders',
         element: <Orders />,
       },
+      {
+        path: 'me',
+        element: <Me />,
+        loader: meLoader,
+        errorElement: <ErrorElement />
+      }
     ],
   },
   {
