@@ -3996,7 +3996,7 @@ const Login = () => {
 ## Challenge (47) - Checkout Page Setup
 
 - create CheckoutForm component
-
+`
 ### Checkout.jsx
 
 - Import Dependencies:

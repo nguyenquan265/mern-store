@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize'
 import { sequelize } from '../config/sql'
 import bcrypt from 'bcryptjs'
+import Order from './order'
 
 const User = sequelize.define(
   'users',
@@ -51,11 +52,17 @@ const User = sequelize.define(
   }
 )
 
+// associations
+User.hasMany(Order, { foreignKey: 'userID' })
+Order.belongsTo(User, { foreignKey: 'userID' })
+
+// hooks
 User.beforeCreate(async function (user, options) {
   const hashedPassword = await bcrypt.hash(user.password, 12)
   user.password = hashedPassword
 })
 
+// instance methods
 User.prototype.isValidPassword = function (password) {
   return bcrypt.compareSync(password, this.password)
 }

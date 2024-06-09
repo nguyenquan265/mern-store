@@ -1,29 +1,49 @@
-import { Form, Link, redirect, Navigate } from 'react-router-dom'
+import { Form, Link, redirect, Navigate, useNavigate } from 'react-router-dom'
 import { FormInput, SubmitBtn } from '../components'
 import { customAxios } from '../utils'
 import { toast } from 'react-toastify'
 import { loginUser } from '../features/user/userSlice'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
-export const action = (store) => async ({ request }) => {
-  const formData = await request.formData()
-  const data = Object.fromEntries(formData)
+export const action =
+  (store) =>
+  async ({ request }) => {
+    const formData = await request.formData()
+    const data = Object.fromEntries(formData)
 
-  try {
-    const res = await customAxios.post('/users/login', data)
-    store.dispatch(loginUser(res.data))
-    toast.success('Login successfully')
-    return redirect('/')
-  } catch (error) {
-    toast.error(
-      error?.response?.data?.message || 'please double check your credentials'
-    )
-    return null
+    try {
+      const res = await customAxios.post('/users/login', data)
+      store.dispatch(loginUser(res.data))
+      toast.success('Login successfully')
+      return redirect('/')
+    } catch (error) {
+      toast.error(
+        error?.response?.data?.message || 'please double check your credentials'
+      )
+      return null
+    }
   }
-}
 
 const Login = () => {
   const { user } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const loginAsGuestUser = async () => {
+    try {
+      const res = await customAxios.post('/users/login', {
+        email: 'test@test.com',
+        password: 'secret'
+      })
+
+      dispatch(loginUser(res.data))
+      toast.success('welcome guest user')
+      return navigate('/')
+    } catch (error) {
+      toast.error('Guest user login error. Please try later.')
+      console.log(error)
+    }
+  }
 
   if (user) {
     return <Navigate to='/' />
@@ -51,7 +71,11 @@ const Login = () => {
         <div className='mt-4'>
           <SubmitBtn text='Login' />
         </div>
-        <button className='btn btn-secondary btn-block' type='button'>
+        <button
+          className='btn btn-secondary btn-block'
+          type='button'
+          onClick={loginAsGuestUser}
+        >
           Guest user
         </button>
         <p>

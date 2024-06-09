@@ -6,8 +6,7 @@ import { catchAsync } from '~/utils/catchAsync'
 
 const signAccessToken = (id) => {
   return sign({ id }, env.jwt.ACCESS_TOKEN_SECRET, {
-    expiresIn: '30s'
-    // expiresIn: env.jwt.ACCESS_TOKEN_EXPIRY,
+    expiresIn: env.jwt.ACCESS_TOKEN_EXPIRY
   })
 }
 
