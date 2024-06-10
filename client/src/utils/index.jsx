@@ -46,7 +46,6 @@ customAxios.interceptors.response.use(
         await axios.post('http://localhost:8000/api/v1/users/logout')
         store.dispatch(logoutUser())
         toast.warn('Please log in to access this page.')
-        return
       }
     }
 

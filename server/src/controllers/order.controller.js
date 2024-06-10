@@ -35,7 +35,8 @@ export const getOrders = catchAsync(async (req, res, next) => {
   const skip = (page - 1) * limit
 
   // query
-  const orders = await Order.findAll({
+  const { count, rows: orders } = await Order.findAndCountAll({
+    order: [['createdAt', 'DESC']],
     where: { userID: req.user.id },
     offset: skip,
     limit,
@@ -43,19 +44,20 @@ export const getOrders = catchAsync(async (req, res, next) => {
   })
 
   // set data
-  const total = orders.length
+  const total = count
   const pageCount = Math.ceil(total / limit)
+  const meta = {
+    pagination: {
+      page,
+      pageSize: limit,
+      pageCount,
+      total
+    }
+  }
 
   res.status(200).json({
     status: 'success',
     orders,
-    meta: {
-      pagination: {
-        page,
-        pageSize: limit,
-        pageCount,
-        total
-      }
-    }
+    meta
   })
 })

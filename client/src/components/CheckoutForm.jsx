@@ -25,13 +25,13 @@ export const action =
         toast.success('Order placed successfully')
         return redirect('/orders')
       } catch (error) {
-        toast.error(
-          error?.response?.data?.error?.message ||
-          'There was an error placing your order'
-        )
-
         if (error?.response?.status === 401 || error?.response?.status === 403) {
           return redirect('/login')
+        } else {
+          toast.error(
+            error?.response?.data?.error?.message ||
+            'There was an error placing your order'
+          )
         }
 
         return null
