@@ -24,15 +24,15 @@ export const action =
         store.dispatch(clearCart())
         toast.success('Order placed successfully')
         return redirect('/orders')
-        // return null
       } catch (error) {
         toast.error(
           error?.response?.data?.error?.message ||
           'There was an error placing your order'
         )
 
-        if (error?.response?.status === 401 || error?.response?.status === 403)
+        if (error?.response?.status === 401 || error?.response?.status === 403) {
           return redirect('/login')
+        }
 
         return null
       }

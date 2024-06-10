@@ -28,4 +28,34 @@ export const createOrder = catchAsync(async (req, res, next) => {
   res.status(200).json({ status: 'success', order })
 })
 
-export const getOrders = catchAsync(async (req, res, next) => {})
+export const getOrders = catchAsync(async (req, res, next) => {
+  // pagination
+  const page = req.query.page * 1 || 1
+  const limit = 10
+  const skip = (page - 1) * limit
+
+  // query
+  const orders = await Order.findAll({
+    where: { userID: req.user.id },
+    offset: skip,
+    limit,
+    include: OrderItem
+  })
+
+  // set data
+  const total = orders.length
+  const pageCount = Math.ceil(total / limit)
+
+  res.status(200).json({
+    status: 'success',
+    orders,
+    meta: {
+      pagination: {
+        page,
+        pageSize: limit,
+        pageCount,
+        total
+      }
+    }
+  })
+})

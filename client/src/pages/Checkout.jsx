@@ -1,13 +1,11 @@
 import { useSelector } from 'react-redux'
 import { CartTotals, CheckoutForm, SectionTitle } from '../components'
-import { toast } from 'react-toastify'
 import { redirect } from 'react-router-dom'
 
 export const loader = (store) => async () => {
   const user = store.getState().user.user
 
   if (!user) {
-    toast.warn('You must be logged in to checkout')
     return redirect('/login')
   }
 
