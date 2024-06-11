@@ -1,8 +1,13 @@
-import { FeaturedProducts, Hero } from "../components"
-import { customAxios } from "../utils"
+import { FeaturedProducts, Hero } from '../components'
+import { customAxios } from '../utils'
 
-export const loader = async () => {
-  const res = await customAxios('/products?featured=true')
+const featuredProductsQuery = {
+  queryKey: ['featuredProducts'],
+  queryFn: () => customAxios('/products?featured=true')
+}
+
+export const loader = (queryClient) => async () => {
+  const res = await queryClient.ensureQueryData(featuredProductsQuery)
   const products = res.data.data
 
   return { products }

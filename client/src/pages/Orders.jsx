@@ -1,10 +1,21 @@
 import { redirect, useLoaderData } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { customAxios } from '../utils'
-import { ComplexPaginationContainer, OrdersList, SectionTitle } from '../components'
+import {
+  ComplexPaginationContainer,
+  OrdersList,
+  SectionTitle
+} from '../components'
+
+const ordersQuery = (params) => {
+  return {
+    queryKey: ['orders', params.page ? parseInt(params.page) : 1],
+    queryFn: () => customAxios('/orders', { params })
+  }
+}
 
 export const loader =
-  (store) =>
+  (store, queryClient) =>
     async ({ request }) => {
       const { user } = store.getState().user
 
@@ -17,7 +28,7 @@ export const loader =
       ])
 
       try {
-        const res = await customAxios('/orders', { params })
+        const res = await queryClient.ensureQueryData(ordersQuery(params))
 
         return { orders: res.data.orders, meta: res.data.meta }
       } catch (error) {

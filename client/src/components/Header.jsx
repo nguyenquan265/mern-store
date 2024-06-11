@@ -4,19 +4,21 @@ import { logoutUser } from '../features/user/userSlice'
 import { clearCart } from '../features/cart/cartSlice'
 import { customAxios } from '../utils'
 import { toast } from 'react-toastify'
+import { useQueryClient } from '@tanstack/react-query'
 
 const Header = () => {
   const { user } = useSelector(state => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
 
   const handleLogout = async () => {
     await customAxios.post('/users/logout')
     navigate('/')
     dispatch(clearCart())
     dispatch(logoutUser())
+    queryClient.removeQueries()
     toast.success('Logged out successfully')
-    return
   }
 
   return (

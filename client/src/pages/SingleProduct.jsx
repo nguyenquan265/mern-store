@@ -9,8 +9,15 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { addItem } from '../features/cart/cartSlice'
 
-export const loader = async ({ params }) => {
-  const res = await customAxios(`/products/${params.id}`)
+const singleProductQuery = (id) => {
+  return {
+    queryKey: ['singleProduct', { id }],
+    queryFn: () => customAxios(`/products/${id}`)
+  }
+}
+
+export const loader = (queryClient) => async ({ params }) => {
+  const res = await queryClient.ensureQueryData(singleProductQuery(params.id))
 
   const product = res.data.data
 
@@ -86,9 +93,8 @@ const SingleProduct = () => {
                   <button
                     key={color}
                     type='button'
-                    className={`badge  w-6 h-6 mr-2  ${
-                      color === productColor && 'border-2 border-secondary'
-                    }`}
+                    className={`badge  w-6 h-6 mr-2  ${color === productColor && 'border-2 border-secondary'
+                      }`}
                     style={{ backgroundColor: color }}
                     onClick={() => setProductColor(color)}
                   ></button>

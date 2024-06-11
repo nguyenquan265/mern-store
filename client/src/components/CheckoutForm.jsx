@@ -6,7 +6,7 @@ import FormInput from './FormInput'
 import SubmitBtn from './SubmitBtn'
 
 export const action =
-  (store) =>
+  (store, queryClient) =>
     async ({ request }) => {
       const formData = await request.formData()
       const { name, address } = Object.fromEntries(formData)
@@ -21,6 +21,7 @@ export const action =
 
       try {
         await customAxios.post('/orders', info)
+        queryClient.removeQueries(['orders'])
         store.dispatch(clearCart())
         toast.success('Order placed successfully')
         return redirect('/orders')
