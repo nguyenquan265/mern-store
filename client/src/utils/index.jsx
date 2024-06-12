@@ -4,7 +4,7 @@ import { store } from '../store'
 import { logoutUser } from '../features/user/userSlice'
 
 const localURL = 'http://localhost:8000/api/v1'
-// const prodURL = 'https://api.example.com/api/v1'
+const url = ''
 
 // create custom axios instance
 axios.defaults.withCredentials = true
@@ -35,7 +35,7 @@ customAxios.interceptors.response.use(
       originalRequest._retry = true
 
       try {
-        const res = await axios.post('http://localhost:8000/api/v1/users/refresh-token')
+        const res = await axios.post(`${url}/api/v1/users/refresh-token`)
         const { token } = res.data
 
         localStorage.setItem('token', token)
@@ -43,7 +43,7 @@ customAxios.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${token}`
         return axios(originalRequest)
       } catch (error) {
-        await axios.post('http://localhost:8000/api/v1/users/logout')
+        await axios.post(`${url}/api/v1/users/logout`)
         store.dispatch(logoutUser())
         toast.warn('Please log in to access this page.')
       }
